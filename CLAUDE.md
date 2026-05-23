@@ -48,6 +48,6 @@ Tests/LazyOSCoreTests/
 2. Create `Sources/LazyOSCore/Catalog/Templates/<slug>/meta.json` with `slug`, `name`, `blurb`, `iconSymbol` (SF Symbol), `accentHex`, `defaultPort`, `healthcheckPath`, `needsAppKey`, `firstRunHintMB`.
 3. Bump `swift build` — `Package.swift` already copies `Catalog/Templates` as a bundle resource.
 
-## Not yet implemented (deferred)
+## Roadmap
 
-Scheduling (launchd plists), backups, idle/sleep auto-stop, menu bar item, custom-folder add, IPC socket between CLI and live GUI, resource-tier compose overrides, notarized .app bundle. See `/Users/wozu/.claude/plans/i-want-to-build-keen-hopcroft.md` for the full roadmap.
+See [ROADMAP.md](ROADMAP.md) for what's next: security hardening, runtime UX, more catalog templates, and the bundled `.app` migration.

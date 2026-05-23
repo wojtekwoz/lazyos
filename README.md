@@ -141,7 +141,16 @@ Per-user state lives at `~/Library/Application Support/LazyOS/` (services.json, 
 
 ## Status
 
-Early. The Mixpost vertical slice runs. Catalog has only Mixpost so far. The bundled `.app` (signed/notarized DMG) and the migration from "depend on host Lima" → "bundled VM image inside the app" are the next two milestones. See [`docs/embedded-runtime-plan.md`](docs/embedded-runtime-plan.md) for the runtime roadmap.
+Early. Mixpost / Postiz / MeTube / Excalidraw run end-to-end. CLI + GUI are wired. The bundled `.app` (signed/notarized DMG) and the migration from "depends on host Lima" → "bundled VM image inside the app" are the next two milestones. See [`ROADMAP.md`](ROADMAP.md) for what's next and [`docs/embedded-runtime-plan.md`](docs/embedded-runtime-plan.md) for the runtime plan.
+
+## Security model
+
+LazyOS runs each app's containers inside an Apple Virtualization-framework VM, so a container exploit doesn't reach macOS directly. Two things to keep in mind:
+
+- **Container processes can still read your home directory** via Lima's default `~/` mount and can reach the public internet. Treat any catalog template (including ours) the same way you'd treat any `docker-compose.yml` — only run apps you trust.
+- **Custom folders are not sandboxed.** Drag-and-drop install runs whatever the compose file says, including bind-mounts of host paths. Audit the YAML before adding.
+
+Tighter mounts, image-digest pinning, and a custom-folder confirmation flow are all on the [roadmap](ROADMAP.md).
 
 ## Contributing
 
