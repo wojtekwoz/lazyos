@@ -1,0 +1,16 @@
+name: lazyos-metube
+
+services:
+  metube:
+    image: ghcr.io/alexta69/metube:latest
+    restart: unless-stopped
+    ports:
+      - "${LAZYOS_PORT}:8081"
+    environment:
+      DOWNLOAD_DIR: "/downloads"
+      STATE_DIR: "/downloads/.metube"
+    volumes:
+      - metube-downloads:/downloads
+
+volumes:
+  metube-downloads:

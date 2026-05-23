@@ -1,0 +1,11 @@
+{
+  "slug": "postiz",
+  "name": "Postiz",
+  "blurb": "Plan and schedule social posts",
+  "iconSymbol": "megaphone.fill",
+  "accentHex": "#6943FF",
+  "defaultPort": 30022,
+  "healthcheckPath": "/",
+  "needsAppKey": true,
+  "firstRunHintMB": 900
+}

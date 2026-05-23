@@ -1,0 +1,10 @@
+name: lazyos-excalidraw
+
+services:
+  excalidraw:
+    image: excalidraw/excalidraw:latest
+    restart: unless-stopped
+    ports:
+      - "${LAZYOS_PORT}:80"
+    environment:
+      NODE_ENV: production

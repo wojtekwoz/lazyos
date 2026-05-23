@@ -1,0 +1,11 @@
+{
+  "slug": "excalidraw",
+  "name": "Excalidraw",
+  "blurb": "Hand-drawn whiteboard sketches",
+  "iconSymbol": "pencil.and.scribble",
+  "accentHex": "#6965DB",
+  "defaultPort": 30024,
+  "healthcheckPath": "/",
+  "needsAppKey": false,
+  "firstRunHintMB": 60
+}

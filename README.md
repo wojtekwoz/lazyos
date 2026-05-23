@@ -38,7 +38,7 @@ LazyOS also runs the runtime *itself* invisibly (a tiny Linux VM via Apple's Vir
 
 ## Features
 
-- **Curated catalog.** Mixpost is built in. Postiz, n8n, Ghost coming. One click installs.
+- **Curated catalog.** Mixpost, Postiz, MeTube, Excalidraw built in. n8n, Ghost coming. One click installs.
 - **Custom apps.** Drag any folder containing a `docker-compose.yml` onto LazyOS to add it.
 - **Schedules.** "Run Mixpost weekdays 9 AM – 7 PM." Translated to launchd plists under the hood.
 - **Power tiers.** Light / Normal / Heavy. Plain English for CPU + RAM caps.

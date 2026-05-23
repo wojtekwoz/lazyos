@@ -1,0 +1,56 @@
+name: lazyos-postiz
+
+services:
+  postiz:
+    image: ghcr.io/gitroomhq/postiz-app:latest
+    restart: unless-stopped
+    ports:
+      - "${LAZYOS_PORT}:5000"
+    environment:
+      MAIN_URL: "http://localhost:${LAZYOS_PORT}"
+      FRONTEND_URL: "http://localhost:${LAZYOS_PORT}"
+      NEXT_PUBLIC_BACKEND_URL: "http://localhost:${LAZYOS_PORT}/api"
+      JWT_SECRET: "${LAZYOS_APP_KEY}"
+      DATABASE_URL: "postgresql://postiz:postiz@postgres:5432/postiz"
+      REDIS_URL: "redis://redis:6379"
+      IS_GENERAL: "true"
+      STORAGE_PROVIDER: "local"
+      UPLOAD_DIRECTORY: "/uploads"
+      NEXT_PUBLIC_UPLOAD_DIRECTORY: "/uploads"
+    volumes:
+      - postiz-uploads:/uploads
+      - postiz-config:/config
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+  postgres:
+    image: postgres:17-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postiz
+      POSTGRES_PASSWORD: postiz
+      POSTGRES_DB: postiz
+    volumes:
+      - postiz-pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postiz -d postiz"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+volumes:
+  postiz-uploads:
+  postiz-config:
+  postiz-pgdata:

@@ -1,0 +1,11 @@
+{
+  "slug": "metube",
+  "name": "MeTube",
+  "blurb": "Download videos from YouTube and friends",
+  "iconSymbol": "arrow.down.video.fill",
+  "accentHex": "#E53935",
+  "defaultPort": 30023,
+  "healthcheckPath": "/",
+  "needsAppKey": false,
+  "firstRunHintMB": 180
+}
