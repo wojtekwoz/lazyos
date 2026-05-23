@@ -1,0 +1,18 @@
+## Swift / SPM
+.build/
+.swiftpm/
+Package.resolved
+*.xcodeproj/
+DerivedData/
+
+## macOS
+.DS_Store
+*.swp
+
+## Editor
+.vscode/
+.idea/
+
+## LazyOS local state (per-user data lives outside the repo, but ignore stray dumps)
+/tmp/lazyos-*.log
+*.tar.zst

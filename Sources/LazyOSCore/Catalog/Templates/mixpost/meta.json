@@ -1,0 +1,11 @@
+{
+  "slug": "mixpost",
+  "name": "Mixpost",
+  "blurb": "Schedule social media posts",
+  "iconSymbol": "paperplane.fill",
+  "accentHex": "#7C5CFC",
+  "defaultPort": 30021,
+  "healthcheckPath": "/",
+  "needsAppKey": true,
+  "firstRunHintMB": 1200
+}
