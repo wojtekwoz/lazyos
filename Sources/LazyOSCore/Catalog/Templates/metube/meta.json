@@ -7,5 +7,5 @@
   "defaultPort": 30023,
   "healthcheckPath": "/",
   "needsAppKey": false,
-  "firstRunHintMB": 180
+  "firstRunHintMB": 1200
 }

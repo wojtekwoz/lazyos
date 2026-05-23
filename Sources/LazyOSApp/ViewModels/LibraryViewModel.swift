@@ -35,12 +35,15 @@ final class LibraryViewModel: ObservableObject {
     }
 
     func refreshStatuses() async {
-        let snapshot = await MainActor.run { self.services }
+        // Re-read the library from disk so installs/uninstalls done from the
+        // CLI (or another LazyOS process) appear here without a manual reload.
+        let freshServices = ServiceManager.shared.library()
         var next: [String: ServiceStatus] = [:]
-        for s in snapshot {
+        for s in freshServices {
             next[s.slug] = ServiceManager.shared.status(slug: s.slug)
         }
         await MainActor.run {
+            self.services = freshServices
             self.statuses = next
             self.runtimeAvailable = ServiceManager.shared.runtimeAvailable()
         }

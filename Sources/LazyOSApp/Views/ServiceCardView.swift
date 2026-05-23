@@ -149,9 +149,12 @@ struct ServiceCardView: View {
             }
 
             if status == .starting, let mb = service.firstRunHintMB {
-                Text("First start downloads ~\(mb) MB")
+                let label = mb >= 1000
+                    ? String(format: "First start downloads ~%.1f GB — this can take a while", Double(mb) / 1024)
+                    : "First start downloads ~\(mb) MB"
+                Text(label)
                     .font(.system(size: 11))
-                    .foregroundStyle(.tertiary)
+                    .foregroundStyle(mb >= 3000 ? .orange : .tertiary)
             }
         }
     }

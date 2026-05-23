@@ -36,8 +36,17 @@ private struct CatalogTile: View {
     let entry: CatalogEntry
     let installed: Bool
     @EnvironmentObject var library: LibraryViewModel
+    @State private var showHeavyConfirm = false
 
     var accent: Color { Color(hex: entry.accentHex) ?? .accentColor }
+    var sizeMB: Int { entry.firstRunHintMB ?? 0 }
+    var isHeavy: Bool { sizeMB >= 3000 }
+    var isMedium: Bool { sizeMB >= 1000 && sizeMB < 3000 }
+
+    private var sizeLabel: String {
+        if sizeMB >= 1000 { return String(format: "%.1f GB download", Double(sizeMB) / 1024) }
+        return "\(sizeMB) MB download"
+    }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
@@ -55,29 +64,53 @@ private struct CatalogTile: View {
                 }
             }
             Spacer(minLength: 0)
-            HStack {
-                if let mb = entry.firstRunHintMB {
-                    Text("~\(mb) MB on first start")
-                        .font(.system(size: 11))
-                        .foregroundStyle(.tertiary)
+
+            if sizeMB > 0 {
+                HStack(spacing: 6) {
+                    Image(systemName: isHeavy ? "exclamationmark.triangle.fill" : "arrow.down.circle")
+                        .font(.system(size: 11, weight: .medium))
+                        .foregroundStyle(isHeavy ? .orange : (isMedium ? .secondary : .tertiary))
+                    Text(sizeLabel)
+                        .font(.system(size: 11, weight: isHeavy ? .semibold : .regular))
+                        .foregroundStyle(isHeavy ? .primary : .secondary)
+                    if isHeavy {
+                        Text("on first start").font(.system(size: 10)).foregroundStyle(.tertiary)
+                    }
                 }
+                .padding(.horizontal, 8).padding(.vertical, 4)
+                .background(
+                    Capsule().fill(isHeavy ? Color.orange.opacity(0.15) : Color(nsColor: .quaternaryLabelColor).opacity(0.3))
+                )
+            }
+
+            HStack {
                 Spacer()
                 if installed {
                     Label("Installed", systemImage: "checkmark")
                         .font(.system(size: 12))
                         .foregroundStyle(.secondary)
                 } else {
-                    Button("Add") { library.install(entry) }
-                        .buttonStyle(.borderedProminent)
-                        .tint(accent)
-                        .controlSize(.small)
+                    Button("Add") {
+                        if isHeavy { showHeavyConfirm = true } else { library.install(entry) }
+                    }
+                    .buttonStyle(.borderedProminent)
+                    .tint(accent)
+                    .controlSize(.small)
                 }
             }
         }
         .padding(14)
-        .frame(maxWidth: .infinity, minHeight: 130, alignment: .topLeading)
+        .frame(maxWidth: .infinity, minHeight: 140, alignment: .topLeading)
         .background(RoundedRectangle(cornerRadius: 12, style: .continuous).fill(Color(nsColor: .controlBackgroundColor)))
         .overlay(RoundedRectangle(cornerRadius: 12, style: .continuous)
             .strokeBorder(Color(nsColor: .separatorColor).opacity(0.6), lineWidth: 0.5))
+        .confirmationDialog("Add \(entry.name)?",
+                            isPresented: $showHeavyConfirm,
+                            titleVisibility: .visible) {
+            Button("Download \(sizeLabel)", role: .destructive) { library.install(entry) }
+            Button("Cancel", role: .cancel) { }
+        } message: {
+            Text("This app is large. On a typical connection the first start can take 10–20 minutes. The download happens once and is cached.")
+        }
     }
 }
